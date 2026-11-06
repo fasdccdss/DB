@@ -1,0 +1,35 @@
+@startuml "ER diagram"
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Категорія {
+    * Назва
+}
+entity Ревізія {
+    * Дата
+    --
+    * Вміст
+}
+entity Стаття {
+    * Тема
+    --
+    * Мова
+    --
+    * Історія ревізій
+}
+entity Джерело {
+    * URL
+}
+entity Користувач {
+    * id
+    * Ім'я користувача
+}
+
+Ревізія }|--|| Користувач
+Ревізія }|--|| Стаття
+Стаття }|--o{ Джерело
+Категорія }|--|{ Стаття
+
+
+@enduml

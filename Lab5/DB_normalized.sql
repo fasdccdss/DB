@@ -1,6 +1,7 @@
 -- delete tables
 DROP TABLE IF EXISTS "revisions_table";
-DROP TABLE IF EXISTS "article";
+DROP TABLE IF EXISTS "articles_normalized", "article_categories",
+"article_sources", "article_revisions";
 DROP TABLE IF EXISTS "users";
 DROP TABLE IF EXISTS "source";
 
@@ -62,6 +63,5 @@ CREATE TABLE article_revisions (
     # було неможоливо зареєструвати
     PRIMARY KEY (topic, language, relative_index),
 
-    FOREIGN KEY (topic, language),
-    REFERENCES article(topic, language)
+    FOREIGN KEY (topic, language) REFERENCES articles_normalized(topic, language)
 );
