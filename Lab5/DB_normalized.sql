@@ -48,9 +48,12 @@ CREATE TABLE article_sources (
     source_url varchar(1000),
     PRIMARY KEY (topic, language, source_url),
     FOREIGN KEY (topic, language) REFERENCES articles_normalized(topic, language),
-    FOREIGN KEY (source_url) REFERENCES sources(source_url)
+    FOREIGN KEY (source_url) REFERENCES sources(url)
 );
 # перероблена таблиця сполучення між статтею та ревізіями
+# був доданий 'relative_index' який нумерує ревізії додані до унікальної статті,
+# бо до цього користувача, додавшего дві ревізії до однієї статті у один день
+# було неможоливо зареєструвати
 CREATE TABLE article_revisions (
     relative_index SERIAL NOT NULL,
     topic varchar(100),
@@ -58,9 +61,6 @@ CREATE TABLE article_revisions (
     date DATE NOT NULL,
     user_id INT REFERENCES users(id),
     content TEXT NOT NULL,
-    # був доданий 'relative_index' який нумерує ревізії додані до унікальної статті,
-    # бо до цього користувача, додавшего дві ревізії до однієї статті у один день
-    # було неможоливо зареєструвати
     PRIMARY KEY (topic, language, relative_index),
 
     FOREIGN KEY (topic, language) REFERENCES articles_normalized(topic, language)

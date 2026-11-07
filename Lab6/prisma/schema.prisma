@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model article_categories {
+  topic               String              @db.VarChar(100)
+  language            languageenum
+  category            categoryenum
+  articles_normalized articles_normalized @relation(fields: [topic, language], references: [topic, language], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([topic, language, category])
+}
+
+model article_revisions {
+  relative_index      Int                 @default(autoincrement())
+  topic               String              @db.VarChar(100)
+  language            languageenum
+  date                DateTime            @db.Date
+  user_id             Int?
+  content             String
+  articles_normalized articles_normalized @relation(fields: [topic, language], references: [topic, language], onDelete: NoAction, onUpdate: NoAction)
+  users               users?              @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([topic, language, relative_index])
+}
+
+model article_sources {
+  topic               String              @db.VarChar(100)
+  language            languageenum
+  source_url          String              @db.VarChar(1000)
+  sources             sources             @relation(fields: [source_url], references: [url], onDelete: NoAction, onUpdate: NoAction)
+  articles_normalized articles_normalized @relation(fields: [topic, language], references: [topic, language], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([topic, language, source_url])
+}
+
+model articles_normalized {
+  topic              String               @db.VarChar(100)
+  language           languageenum
+  article_categories article_categories[]
+  article_revisions  article_revisions[]
+  article_sources    article_sources[]
+
+  @@id([topic, language])
+}
+
+model sources {
+  url             String            @id @db.VarChar(1000)
+  article_sources article_sources[]
+}
+
+model users {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique @db.VarChar(100)
+  article_revisions article_revisions[]
+}
+
+enum category {
+  Science
+  Politics
+  Technology
+}
+
+enum categoryenum {
+  Science
+  Politics
+  Technology
+}
+
+enum languageenum {
+  Ukrainian
+  English
+  Chinese
+}
