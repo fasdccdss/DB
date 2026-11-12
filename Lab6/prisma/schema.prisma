@@ -61,29 +61,6 @@ model users {
   article_revisions article_revisions[]
 }
 
-// Додавання нової таблиці //
-model some_model {
-  id          Int      @id @default(autoincrement())
-  variable_1  String
-  variable_2  Float
-}
-// Зміна існуючої таблиці //
-/*
-model some_model {
-  id          Int      @id @default(autoincrement())
-  variable_1  String
-  variable_2  Float
-  variable_3  Int
-}
-*/
-// Видалення стовпця //
-/*
-model some_model {
-  id          Int      @id @default(autoincrement())
-  variable_1  String
-}
-*/
-
 enum category {
   Science
   Politics
@@ -100,4 +77,29 @@ enum languageenum {
   Ukrainian
   English
   Chinese
+}
+
+// Додавання нової таблиці //
+/*
+model some_model {
+  id          Int      @id @default(autoincrement())
+  variable_1  String
+  variable_2  Float
+}
+*/
+
+// Зміна існуючої таблиці //
+/*
+model some_model {
+  id          Int      @id @default(autoincrement())
+  variable_1  String
+  variable_2  Float
+  variable_3  Int
+}
+*/
+
+// Видалення стовпця //
+model some_model {
+  id          Int      @id @default(autoincrement())
+  variable_1  String
 }
